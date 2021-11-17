@@ -110,14 +110,14 @@ def refresh_authorization(google_client_id, google_client_secret, refresh_token)
     return response['access_token'], response['expires_in']
 
 
-def send_mail(fromaddr, toaddr, subject, message):
+def send_mail(fromaddr, toaddrs, subject, message):
     access_token, expires_in = refresh_authorization(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REFRESH_TOKEN)
     auth_string = generate_oauth2_string(fromaddr, access_token, as_base64=True)
 
     msg = MIMEMultipart('related')
     msg['Subject'] = subject
     msg['From'] = fromaddr
-    msg['To'] = toaddr
+    msg['To'] = ", ".join(toaddrs)
     msg.preamble = 'This is a multi-part message in MIME format.'
     msg_alternative = MIMEMultipart('alternative')
     msg.attach(msg_alternative)
@@ -129,7 +129,7 @@ def send_mail(fromaddr, toaddr, subject, message):
     server.ehlo(GOOGLE_CLIENT_ID)
     server.starttls()
     server.docmd('AUTH', 'XOAUTH2 ' + auth_string)
-    server.sendmail(fromaddr, toaddr, msg.as_string())
+    server.sendmail(fromaddr, toaddrs, msg.as_string())
     server.quit()
 
 def get_json_data(json_file):
@@ -147,6 +147,6 @@ if __name__ == '__main__':
         print('Set the following as your GOOGLE_REFRESH_TOKEN:', refresh_token)
         exit()
 
-    toaddr = get_json_data(CONFIG['DEFAULT']['recipients_json'])
+    toaddrs = get_json_data(CONFIG['DEFAULT']['recipients_json'])
 
-    send_mail(FROMADDR, toaddr, SUBJECT, MESSAGE)
+    send_mail(FROMADDR, toaddrs, SUBJECT, MESSAGE)

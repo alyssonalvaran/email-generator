@@ -134,3 +134,4 @@ dmypy.json
 # Secret
 config.ini
 recipients.json
+message.html

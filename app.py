@@ -22,7 +22,6 @@ GOOGLE_REFRESH_TOKEN = CONFIG['OAUTH_CLIENT']['GOOGLE_REFRESH_TOKEN']
 
 FROMADDR = CONFIG['DEFAULT']['fromaddr']
 SUBJECT = CONFIG['DEFAULT']['subject']
-MESSAGE = CONFIG['DEFAULT']['message']
 
 def command_to_url(command):
     return '%s/%s' % (GOOGLE_ACCOUNTS_BASE_URL, command)
@@ -132,10 +131,17 @@ def send_mail(fromaddr, toaddrs, subject, message):
     server.sendmail(fromaddr, toaddrs, msg.as_string())
     server.quit()
 
-def get_json_data(json_file):
-    f = open('recipients.json', 'r')
-    data = json.load(f)
-    f.close()
+def get_json_data(file_name):
+    file_wrapper = open(file_name, 'r')
+    file_type = file_name[file_name.rindex('.')+1:]
+
+    data = None
+    if file_type == 'json':
+        data = json.load(file_wrapper)
+    elif file_type == 'html':
+        data = file_wrapper.read()
+
+    file_wrapper.close()
 
     return data
 
@@ -148,5 +154,6 @@ if __name__ == '__main__':
         exit()
 
     toaddrs = get_json_data(CONFIG['DEFAULT']['recipients_json'])
+    message = get_json_data(CONFIG['DEFAULT']['message_html'])
 
-    send_mail(FROMADDR, toaddrs, SUBJECT, MESSAGE)
+    send_mail(FROMADDR, toaddrs, SUBJECT, message)

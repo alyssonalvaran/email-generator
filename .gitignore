@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# OAuth Client
+oauth_client.json
+
+# DS_Store
+.DS_Store

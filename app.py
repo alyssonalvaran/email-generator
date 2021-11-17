@@ -1,16 +1,3 @@
-"""
-Reference:
-https://blog.macuyiko.com/post/2016/how-to-send-html-mails-with-oauth2-and-gmail-in-python.html
-
-Adapted from:
-https://github.com/google/gmail-oauth2-tools/blob/master/python/oauth2.py
-https://developers.google.com/identity/protocols/OAuth2
-
-1. Generate and authorize an OAuth2 (generate_oauth2_token)
-2. Generate a new access tokens using a refresh token(refresh_token)
-3. Generate an OAuth2 string to use for login (access_token)
-"""
-
 import base64
 import configparser
 import imaplib
@@ -21,6 +8,7 @@ import urllib.request
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import lxml.html
+
 
 GOOGLE_ACCOUNTS_BASE_URL = 'https://accounts.google.com'
 REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'

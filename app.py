@@ -18,7 +18,7 @@ CONFIG.read('config.ini')
 
 GOOGLE_CLIENT_ID = CONFIG['OAUTH_CLIENT']['client_id']
 GOOGLE_CLIENT_SECRET = CONFIG['OAUTH_CLIENT']['client_secret']
-GOOGLE_REFRESH_TOKEN = None
+GOOGLE_REFRESH_TOKEN = CONFIG['OAUTH_CLIENT']['GOOGLE_REFRESH_TOKEN']
 
 FROMADDR = CONFIG['DEFAULT']['fromaddr']
 TOADDR = CONFIG['DEFAULT']['toaddr']
@@ -142,7 +142,4 @@ if __name__ == '__main__':
         print('Set the following as your GOOGLE_REFRESH_TOKEN:', refresh_token)
         exit()
 
-    send_mail('--------@gmail.com', '--------@gmail.com',
-              'A mail from you from Python',
-              '<b>A mail from you from Python</b><br><br>' +
-              'So happy to hear from you!')
+    send_mail(FROMADDR, TOADDR, SUBJECT, MESSAGE)

@@ -21,7 +21,6 @@ GOOGLE_CLIENT_SECRET = CONFIG['OAUTH_CLIENT']['client_secret']
 GOOGLE_REFRESH_TOKEN = CONFIG['OAUTH_CLIENT']['GOOGLE_REFRESH_TOKEN']
 
 FROMADDR = CONFIG['DEFAULT']['fromaddr']
-TOADDR = CONFIG['DEFAULT']['toaddr']
 SUBJECT = CONFIG['DEFAULT']['subject']
 MESSAGE = CONFIG['DEFAULT']['message']
 
@@ -133,6 +132,12 @@ def send_mail(fromaddr, toaddr, subject, message):
     server.sendmail(fromaddr, toaddr, msg.as_string())
     server.quit()
 
+def get_json_data(json_file):
+    f = open('recipients.json', 'r')
+    data = json.load(f)
+    f.close()
+
+    return data
 
 
 if __name__ == '__main__':
@@ -142,4 +147,6 @@ if __name__ == '__main__':
         print('Set the following as your GOOGLE_REFRESH_TOKEN:', refresh_token)
         exit()
 
-    send_mail(FROMADDR, TOADDR, SUBJECT, MESSAGE)
+    toaddr = get_json_data(CONFIG['DEFAULT']['recipients_json'])
+
+    send_mail(FROMADDR, toaddr, SUBJECT, MESSAGE)

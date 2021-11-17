@@ -12,6 +12,7 @@ https://developers.google.com/identity/protocols/OAuth2
 """
 
 import base64
+import configparser
 import imaplib
 import json
 import smtplib
@@ -24,10 +25,17 @@ import lxml.html
 GOOGLE_ACCOUNTS_BASE_URL = 'https://accounts.google.com'
 REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'
 
-GOOGLE_CLIENT_ID = '<FILL ME IN>'
-GOOGLE_CLIENT_SECRET = '<FILL ME IN>'
+CONFIG = configparser.ConfigParser()
+CONFIG.read('config.ini')
+
+GOOGLE_CLIENT_ID = CONFIG['OAUTH_CLIENT']['client_id']
+GOOGLE_CLIENT_SECRET = CONFIG['OAUTH_CLIENT']['client_secret']
 GOOGLE_REFRESH_TOKEN = None
 
+FROMADDR = CONFIG['DEFAULT']['fromaddr']
+TOADDR = CONFIG['DEFAULT']['toaddr']
+SUBJECT = CONFIG['DEFAULT']['subject']
+MESSAGE = CONFIG['DEFAULT']['message']
 
 def command_to_url(command):
     return '%s/%s' % (GOOGLE_ACCOUNTS_BASE_URL, command)
